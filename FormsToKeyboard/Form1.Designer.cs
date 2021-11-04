@@ -42,6 +42,7 @@ namespace FormsToKeyboard
             this.SendBtn.TabIndex = 0;
             this.SendBtn.Text = "Send";
             this.SendBtn.UseVisualStyleBackColor = true;
+            this.SendBtn.Click += new System.EventHandler(this.SendBtn_Click);
             // 
             // ClearBtn
             // 
@@ -51,6 +52,7 @@ namespace FormsToKeyboard
             this.ClearBtn.TabIndex = 2;
             this.ClearBtn.Text = "Clear";
             this.ClearBtn.UseVisualStyleBackColor = true;
+            this.ClearBtn.Click += new System.EventHandler(this.ClearBtn_Click);
             // 
             // InputText
             // 

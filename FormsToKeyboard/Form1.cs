@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -15,6 +16,18 @@ namespace FormsToKeyboard
         public Form1()
         {
             InitializeComponent();
+            PopulateTestText();
+            InitializeProcessList();
+        }
+
+        private void PopulateTestText()
+        {
+            InputText.Text = "This is some test text";
+        }
+
+        private void InitializeProcessList()
+        {
+            ProcessList.DataSource = new List<string> { "notepad", "chrome", "msedge" };
         }
 
         private void SendBtn_Click(object sender, EventArgs e)
@@ -22,11 +35,10 @@ namespace FormsToKeyboard
             // Try to get the window
             try
             {
-                var processName = "notepad";
-                var process = Process.GetProcessesByName(processName).FirstOrDefault();
+                var process = Process.GetProcessesByName(ProcessList.SelectedValue as string).FirstOrDefault();
                 if (process == null)
                 {
-                    MessageBox.Show($"Could not attach to the process with name [{processName}]", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Could not attach to the process with name [{ProcessList.SelectedValue as string}]", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 

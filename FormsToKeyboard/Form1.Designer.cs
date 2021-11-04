@@ -32,11 +32,12 @@ namespace FormsToKeyboard
             this.SendBtn = new System.Windows.Forms.Button();
             this.ClearBtn = new System.Windows.Forms.Button();
             this.InputText = new System.Windows.Forms.RichTextBox();
+            this.ProcessList = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // SendBtn
             // 
-            this.SendBtn.Location = new System.Drawing.Point(163, 181);
+            this.SendBtn.Location = new System.Drawing.Point(245, 182);
             this.SendBtn.Name = "SendBtn";
             this.SendBtn.Size = new System.Drawing.Size(75, 23);
             this.SendBtn.TabIndex = 0;
@@ -46,7 +47,7 @@ namespace FormsToKeyboard
             // 
             // ClearBtn
             // 
-            this.ClearBtn.Location = new System.Drawing.Point(12, 181);
+            this.ClearBtn.Location = new System.Drawing.Point(164, 182);
             this.ClearBtn.Name = "ClearBtn";
             this.ClearBtn.Size = new System.Drawing.Size(75, 23);
             this.ClearBtn.TabIndex = 2;
@@ -58,15 +59,24 @@ namespace FormsToKeyboard
             // 
             this.InputText.Location = new System.Drawing.Point(12, 12);
             this.InputText.Name = "InputText";
-            this.InputText.Size = new System.Drawing.Size(226, 163);
+            this.InputText.Size = new System.Drawing.Size(308, 163);
             this.InputText.TabIndex = 3;
             this.InputText.Text = "";
+            // 
+            // ProcessList
+            // 
+            this.ProcessList.FormattingEnabled = true;
+            this.ProcessList.Location = new System.Drawing.Point(12, 183);
+            this.ProcessList.Name = "ProcessList";
+            this.ProcessList.Size = new System.Drawing.Size(146, 23);
+            this.ProcessList.TabIndex = 4;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(250, 212);
+            this.ClientSize = new System.Drawing.Size(332, 217);
+            this.Controls.Add(this.ProcessList);
             this.Controls.Add(this.InputText);
             this.Controls.Add(this.ClearBtn);
             this.Controls.Add(this.SendBtn);
@@ -81,6 +91,7 @@ namespace FormsToKeyboard
         private System.Windows.Forms.Button SendBtn;
         private System.Windows.Forms.Button ClearBtn;
         private System.Windows.Forms.RichTextBox InputText;
+        private System.Windows.Forms.ComboBox ProcessList;
     }
 }
 

@@ -13,8 +13,8 @@ namespace FormsToKeyboard
     {
         [DllImport("User32.dll")]
         static extern int SetForegroundWindow(IntPtr point);
-        private string _apiEndpoint = "";
-        private string _apiKey = "";
+        private static string _apiEndpoint = "";
+        private static string _apiKey = "";
 
 
         public Form1()

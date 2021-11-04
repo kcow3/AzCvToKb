@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -50,55 +52,18 @@ namespace FormsToKeyboard
 
         private void InitializeTestText()
         {
-            InputText.Text = "This is some test text";
+            InputText.Text = "";
         }
 
         private void InitializeProcessList()
         {
-            ProcessList.DataSource = new List<string> { "notepad", "chrome", "msedge" };
-        }
-
-        private async void SendBtn_Click(object sender, EventArgs e)
-        {
-            // Try to get the window
-            try
-            {
-                ComputerVisionClient client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(_apiKey))
-                {
-                    Endpoint = _apiEndpoint
-                };
-
-                //await ReadFileUrl(client, "https://intelligentkioskstore.blob.core.windows.net/visionapi/suggestedphotos/3.png");
-                var result = await ReadFileLocal(client, "TypingTest2.png");
-
-
-                var process = Process.GetProcessesByName(ProcessList.SelectedValue as string).FirstOrDefault();
-                if (process == null)
-                {
-                    MessageBox.Show($"Could not attach to the process with name [{ProcessList.SelectedValue as string}]", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                var window = process.MainWindowHandle;
-                SetForegroundWindow(window);
-
-
-                InputText.Text = result;
-
-                SendStringToKeyboardBuffer(result);
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            ProcessList.DataSource = new List<string> { "msedge", "chrome", "notepad" };
         }
 
 
-        private static async Task<string> ReadFileLocal(ComputerVisionClient client, string localFile)
+        private static async Task<string> ReadFileLocal(ComputerVisionClient client, Stream stream)
         {
-            var textHeaders = await client.ReadInStreamAsync(File.OpenRead(localFile));
+            var textHeaders = await client.ReadInStreamAsync(stream);
 
             var operationId = textHeaders.OperationLocation.Split("/analyzeResults/")[1];
             Thread.Sleep(2000);
@@ -121,7 +86,7 @@ namespace FormsToKeyboard
                     result.Append(" ");
                 }
             }
-            return result.ToString().Remove(result.Length - 1);
+            return result.ToString();
         }
 
         /// <summary>
@@ -129,7 +94,7 @@ namespace FormsToKeyboard
         /// </summary>
         /// <param name="s">String to send</param>
         /// <param name="delay">Delay in ms</param>
-        private void SendStringToKeyboardBuffer(string s, int delay = 0)
+        private void SendStringToKeyboardBuffer(string s, int delay = 25)
         {
             var charactersToSend = s.Select(x => new string(x, 1)).ToArray();
             foreach (var character in charactersToSend)
@@ -142,6 +107,45 @@ namespace FormsToKeyboard
         private void ClearBtn_Click(object sender, EventArgs e)
         {
             InputText.Text = "";
+        }
+
+        private async void ClipboardBtn_Click(object sender, EventArgs e)
+        {
+            if (!Clipboard.ContainsImage())
+            {
+                MessageBox.Show($"No image in clipboard", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else
+            {
+                var stream = new MemoryStream();
+                var image = Clipboard.GetImage();
+                image.Save(stream, ImageFormat.Png);
+                stream.Position = 0;
+
+                ComputerVisionClient client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(_apiKey))
+                {
+                    Endpoint = _apiEndpoint
+                };
+
+                var result = await ReadFileLocal(client, stream);
+
+                var process = Process.GetProcessesByName(ProcessList.SelectedValue as string).FirstOrDefault();
+                if (process == null)
+                {
+                    MessageBox.Show($"Could not attach to the process with name [{ProcessList.SelectedValue as string}]", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var window = process.MainWindowHandle;
+                SetForegroundWindow(window);
+
+
+                InputText.Text = result;
+
+                SendStringToKeyboardBuffer(result);
+
+            }
         }
     }
 }

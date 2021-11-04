@@ -29,21 +29,11 @@ namespace FormsToKeyboard
         /// </summary>
         private void InitializeComponent()
         {
-            this.SendBtn = new System.Windows.Forms.Button();
             this.ClearBtn = new System.Windows.Forms.Button();
             this.InputText = new System.Windows.Forms.RichTextBox();
             this.ProcessList = new System.Windows.Forms.ComboBox();
+            this.ClipboardBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // SendBtn
-            // 
-            this.SendBtn.Location = new System.Drawing.Point(245, 182);
-            this.SendBtn.Name = "SendBtn";
-            this.SendBtn.Size = new System.Drawing.Size(75, 23);
-            this.SendBtn.TabIndex = 0;
-            this.SendBtn.Text = "Send";
-            this.SendBtn.UseVisualStyleBackColor = true;
-            this.SendBtn.Click += new System.EventHandler(this.SendBtn_Click);
             // 
             // ClearBtn
             // 
@@ -71,15 +61,25 @@ namespace FormsToKeyboard
             this.ProcessList.Size = new System.Drawing.Size(146, 23);
             this.ProcessList.TabIndex = 4;
             // 
+            // ClipboardBtn
+            // 
+            this.ClipboardBtn.Location = new System.Drawing.Point(245, 183);
+            this.ClipboardBtn.Name = "ClipboardBtn";
+            this.ClipboardBtn.Size = new System.Drawing.Size(75, 23);
+            this.ClipboardBtn.TabIndex = 5;
+            this.ClipboardBtn.Text = "Copy Clipboard";
+            this.ClipboardBtn.UseVisualStyleBackColor = true;
+            this.ClipboardBtn.Click += new System.EventHandler(this.ClipboardBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(332, 217);
+            this.ClientSize = new System.Drawing.Size(332, 244);
+            this.Controls.Add(this.ClipboardBtn);
             this.Controls.Add(this.ProcessList);
             this.Controls.Add(this.InputText);
             this.Controls.Add(this.ClearBtn);
-            this.Controls.Add(this.SendBtn);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -87,11 +87,10 @@ namespace FormsToKeyboard
         }
 
         #endregion
-
-        private System.Windows.Forms.Button SendBtn;
         private System.Windows.Forms.Button ClearBtn;
         private System.Windows.Forms.RichTextBox InputText;
         private System.Windows.Forms.ComboBox ProcessList;
+        private System.Windows.Forms.Button ClipboardBtn;
     }
 }
 

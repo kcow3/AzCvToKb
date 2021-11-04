@@ -1,11 +1,17 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace FormsToKeyboard
 {
@@ -52,11 +58,20 @@ namespace FormsToKeyboard
             ProcessList.DataSource = new List<string> { "notepad", "chrome", "msedge" };
         }
 
-        private void SendBtn_Click(object sender, EventArgs e)
+        private async void SendBtn_Click(object sender, EventArgs e)
         {
             // Try to get the window
             try
             {
+                ComputerVisionClient client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(_apiKey))
+                {
+                    Endpoint = _apiEndpoint
+                };
+
+                //await ReadFileUrl(client, "https://intelligentkioskstore.blob.core.windows.net/visionapi/suggestedphotos/3.png");
+                var result = await ReadFileLocal(client, "TypingTest2.png");
+
+
                 var process = Process.GetProcessesByName(ProcessList.SelectedValue as string).FirstOrDefault();
                 if (process == null)
                 {
@@ -67,19 +82,46 @@ namespace FormsToKeyboard
                 var window = process.MainWindowHandle;
                 SetForegroundWindow(window);
 
-                if (string.IsNullOrEmpty(InputText.Text))
-                {
-                    MessageBox.Show($"Please enter some text to send", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
 
-                SendStringToKeyboardBuffer(InputText.Text);
+                InputText.Text = result;
+
+                SendStringToKeyboardBuffer(result);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("We ran into an error when trying to send text to the selected process...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error: {ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+        }
+
+
+        private static async Task<string> ReadFileLocal(ComputerVisionClient client, string localFile)
+        {
+            var textHeaders = await client.ReadInStreamAsync(File.OpenRead(localFile));
+
+            var operationId = textHeaders.OperationLocation.Split("/analyzeResults/")[1];
+            Thread.Sleep(2000);
+
+            ReadOperationResult results;
+            do
+            {
+                results = await client.GetReadResultAsync(Guid.Parse(operationId));
+            }
+            while ((results.Status == OperationStatusCodes.Running ||
+                results.Status == OperationStatusCodes.NotStarted));
+
+            var textUrlFileResults = results.AnalyzeResult.ReadResults;
+            var result = new StringBuilder();
+            foreach (ReadResult page in textUrlFileResults)
+            {
+                foreach (Line line in page.Lines)
+                {
+                    result.Append(line.Text);
+                    result.Append(" ");
+                }
+            }
+            return result.ToString().Remove(result.Length - 1);
         }
 
         /// <summary>

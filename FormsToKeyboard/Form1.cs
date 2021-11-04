@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,15 +13,36 @@ namespace FormsToKeyboard
     {
         [DllImport("User32.dll")]
         static extern int SetForegroundWindow(IntPtr point);
+        private string _apiEndpoint = "";
+        private string _apiKey = "";
+
 
         public Form1()
         {
             InitializeComponent();
-            PopulateTestText();
+            InitializeTestText();
             InitializeProcessList();
+            InitializeUserSecrets();
         }
 
-        private void PopulateTestText()
+        private void InitializeUserSecrets()
+        {
+            var config = new ConfigurationBuilder().AddUserSecrets<Form1>().Build();
+            if (config == null)
+                return;
+
+            var secretProvider = config.Providers.First();
+            if (secretProvider.TryGet("cvApiKey", out var apiKey))
+            {
+                _apiKey = apiKey;
+            }
+            if (secretProvider.TryGet("cvApiEndpoint", out var apiEndpoint))
+            {
+                _apiEndpoint = apiEndpoint;
+            }
+        }
+
+        private void InitializeTestText()
         {
             InputText.Text = "This is some test text";
         }

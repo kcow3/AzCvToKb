@@ -24,8 +24,7 @@ namespace FormsToKeyboard
         public Form1()
         {
             InitializeComponent();
-            InitializeTestText();
-            InitializeProcessList();
+            InitializeData();
             InitializeAzureCv();
         }
 
@@ -71,17 +70,15 @@ namespace FormsToKeyboard
         /// <summary>
         /// Initialize preview text
         /// </summary>
-        private void InitializeTestText()
+        private void InitializeData()
         {
-            InputText.Text = "";
-        }
-
-        /// <summary>
-        /// Provide the user with a standard list of processes to attache to.
-        /// </summary>
-        private void InitializeProcessList()
-        {
+            // Processes to attach to (get from task manager processes).
             ProcessList.DataSource = new List<string> { "msedge", "chrome", "notepad" };
+
+            InputText.Text = "";
+
+            // Default value for the delay picker (ms)
+            DelayPicker.Value = 25;
         }
 
         /// <summary>
@@ -157,7 +154,7 @@ namespace FormsToKeyboard
             InputText.Text = text;
 
             // Send text to given process
-            SendTextToProcess(ProcessList.SelectedValue as string, text, 50);
+            SendTextToProcess(ProcessList.SelectedValue as string, text, (int)DelayPicker.Value);
         }
 
         /// <summary>

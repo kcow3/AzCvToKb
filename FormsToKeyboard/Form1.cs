@@ -4,8 +4,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -20,50 +18,80 @@ namespace FormsToKeyboard
     public partial class Form1 : Form
     {
         [DllImport("User32.dll")]
-        static extern int SetForegroundWindow(IntPtr point);
-        private static string _apiEndpoint = "";
-        private static string _apiKey = "";
-
+        private static extern int SetForegroundWindow(IntPtr point);
+        private static ComputerVisionClient _client;
 
         public Form1()
         {
             InitializeComponent();
             InitializeTestText();
             InitializeProcessList();
-            InitializeUserSecrets();
+            InitializeAzureCv();
         }
 
-        private void InitializeUserSecrets()
+        /// <summary>
+        /// Read Azure CV api credentials from user secrets.
+        /// Make sure your user secrets contains the following: "cvApiKey" and "cvApiEndpoint"
+        /// </summary>
+        private void InitializeAzureCv()
         {
-            var config = new ConfigurationBuilder().AddUserSecrets<Form1>().Build();
-            if (config == null)
-                return;
+            try
+            {
+                var config = new ConfigurationBuilder().AddUserSecrets<Form1>().Build();
+                if (config == null)
+                    return;
 
-            var secretProvider = config.Providers.First();
-            if (secretProvider.TryGet("cvApiKey", out var apiKey))
-            {
-                _apiKey = apiKey;
+                var secretProvider = config.Providers.First();
+
+                if (!secretProvider.TryGet("cvApiKey", out var apiKey))
+                {
+                    throw new Exception("Could not retrieve Azure CV API key");
+                }
+                if (!secretProvider.TryGet("cvApiEndpoint", out var apiEndpoint))
+                {
+                    throw new Exception("Could not retrieve Azure CV API endpoint");
+                }
+                if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(apiEndpoint))
+                {
+                    throw new Exception("Incorrect Azure CV API credentials");
+                }
+
+                _client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(apiKey))
+                {
+                    Endpoint = apiEndpoint
+                };
             }
-            if (secretProvider.TryGet("cvApiEndpoint", out var apiEndpoint))
+            catch (Exception)
             {
-                _apiEndpoint = apiEndpoint;
+                MessageBox.Show($"Could not read user secrets.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
 
+        /// <summary>
+        /// Initialize preview text
+        /// </summary>
         private void InitializeTestText()
         {
             InputText.Text = "";
         }
 
+        /// <summary>
+        /// Provide the user with a standard list of processes to attache to.
+        /// </summary>
         private void InitializeProcessList()
         {
             ProcessList.DataSource = new List<string> { "msedge", "chrome", "notepad" };
         }
 
-
-        private static async Task<string> ReadFileLocal(ComputerVisionClient client, Stream stream)
+        /// <summary>
+        /// Perform OCR on image stream using Azure CV
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        private static async Task<string> GetTextFromImage(Stream stream)
         {
-            var textHeaders = await client.ReadInStreamAsync(stream);
+            var textHeaders = await _client.ReadInStreamAsync(stream);
 
             var operationId = textHeaders.OperationLocation.Split("/analyzeResults/")[1];
             Thread.Sleep(2000);
@@ -71,7 +99,7 @@ namespace FormsToKeyboard
             ReadOperationResult results;
             do
             {
-                results = await client.GetReadResultAsync(Guid.Parse(operationId));
+                results = await _client.GetReadResultAsync(Guid.Parse(operationId));
             }
             while ((results.Status == OperationStatusCodes.Running ||
                 results.Status == OperationStatusCodes.NotStarted));
@@ -94,12 +122,12 @@ namespace FormsToKeyboard
         /// </summary>
         /// <param name="s">String to send</param>
         /// <param name="delay">Delay in ms</param>
-        private void SendStringToKeyboardBuffer(string s, int delay = 25)
+        private void SendStringToKeyboardBuffer(string s, int delay = 0)
         {
             var charactersToSend = s.Select(x => new string(x, 1)).ToArray();
             foreach (var character in charactersToSend)
             {
-                SendKeys.SendWait(character);
+                SendKeys.SendWait(character.FormatStringForKeyboardBuffer());
                 Thread.Sleep(delay);
             }
         }
@@ -116,35 +144,49 @@ namespace FormsToKeyboard
                 MessageBox.Show($"No image in clipboard", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            else
+
+            if (!Clipboard.GetImage().IsDimentionsOk())
             {
-                var stream = new MemoryStream();
-                var image = Clipboard.GetImage();
-                image.Save(stream, ImageFormat.Png);
-                stream.Position = 0;
+                MessageBox.Show($"Image must have be between 50x50 and 10000x10000 pixels", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-                ComputerVisionClient client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(_apiKey))
-                {
-                    Endpoint = _apiEndpoint
-                };
+            var text = await GetTextFromImage(Clipboard.GetImage().ToStream());
 
-                var result = await ReadFileLocal(client, stream);
+            // Preview the text
+            InputText.Text = text;
 
-                var process = Process.GetProcessesByName(ProcessList.SelectedValue as string).FirstOrDefault();
+            // Send text to given process
+            SendTextToProcess(ProcessList.SelectedValue as string, text, 50);
+        }
+
+        /// <summary>
+        /// Attach to the given process and set the window to the foreground
+        /// </summary>
+        /// <param name="processName">Name of the process as found under processes in task manager</param>
+        /// <param name="text">Text to send to the process</param>
+        /// <param name="delay">Delay in ms between characters to send</param>
+        private void SendTextToProcess(string processName, string text, int delay = 0)
+        {
+            try
+            {
+                var process = Process.GetProcessesByName(processName).FirstOrDefault();
                 if (process == null)
                 {
-                    MessageBox.Show($"Could not attach to the process with name [{ProcessList.SelectedValue as string}]", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Could not attach to the process with name [{processName}]", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
+                // Open the given process in the foreground
                 var window = process.MainWindowHandle;
                 SetForegroundWindow(window);
 
-
-                InputText.Text = result;
-
-                SendStringToKeyboardBuffer(result);
-
+                SendStringToKeyboardBuffer(text, delay);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Error in sending text to process: {e.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
     }

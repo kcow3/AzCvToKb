@@ -1,7 +1,7 @@
 ﻿
 namespace FormsToKeyboard
 {
-    partial class ScreenGrabber
+    partial class ScreenGrabberWindow
     {
         /// <summary>
         /// Required designer variable.

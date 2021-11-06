@@ -32,21 +32,22 @@ namespace FormsToKeyboard
             this.ClearBtn = new System.Windows.Forms.Button();
             this.InputText = new System.Windows.Forms.RichTextBox();
             this.ProcessList = new System.Windows.Forms.ComboBox();
-            this.ClipboardBtn = new System.Windows.Forms.Button();
             this.DelayPicker = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.ImagePreview = new System.Windows.Forms.PictureBox();
-            this.ScreenshotBtn = new System.Windows.Forms.Button();
+            this.CaptureBtn = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.SendBtn = new System.Windows.Forms.Button();
+            this.ProcessBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DelayPicker)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImagePreview)).BeginInit();
             this.SuspendLayout();
             // 
             // ClearBtn
             // 
-            this.ClearBtn.Location = new System.Drawing.Point(12, 128);
+            this.ClearBtn.Location = new System.Drawing.Point(12, 107);
             this.ClearBtn.Name = "ClearBtn";
             this.ClearBtn.Size = new System.Drawing.Size(146, 23);
             this.ClearBtn.TabIndex = 2;
@@ -69,16 +70,6 @@ namespace FormsToKeyboard
             this.ProcessList.Name = "ProcessList";
             this.ProcessList.Size = new System.Drawing.Size(146, 23);
             this.ProcessList.TabIndex = 4;
-            // 
-            // ClipboardBtn
-            // 
-            this.ClipboardBtn.Location = new System.Drawing.Point(13, 157);
-            this.ClipboardBtn.Name = "ClipboardBtn";
-            this.ClipboardBtn.Size = new System.Drawing.Size(146, 23);
-            this.ClipboardBtn.TabIndex = 5;
-            this.ClipboardBtn.Text = "Copy Clipboard";
-            this.ClipboardBtn.UseVisualStyleBackColor = true;
-            this.ClipboardBtn.Click += new System.EventHandler(this.ClipboardBtn_Click);
             // 
             // DelayPicker
             // 
@@ -118,15 +109,15 @@ namespace FormsToKeyboard
             this.ImagePreview.TabIndex = 9;
             this.ImagePreview.TabStop = false;
             // 
-            // ScreenshotBtn
+            // CaptureBtn
             // 
-            this.ScreenshotBtn.Location = new System.Drawing.Point(14, 186);
-            this.ScreenshotBtn.Name = "ScreenshotBtn";
-            this.ScreenshotBtn.Size = new System.Drawing.Size(145, 23);
-            this.ScreenshotBtn.TabIndex = 10;
-            this.ScreenshotBtn.Text = "Take Screenshot";
-            this.ScreenshotBtn.UseVisualStyleBackColor = true;
-            this.ScreenshotBtn.Click += new System.EventHandler(this.ScreenshotBtn_Click);
+            this.CaptureBtn.Location = new System.Drawing.Point(13, 136);
+            this.CaptureBtn.Name = "CaptureBtn";
+            this.CaptureBtn.Size = new System.Drawing.Size(145, 23);
+            this.CaptureBtn.TabIndex = 10;
+            this.CaptureBtn.Text = "Capture";
+            this.CaptureBtn.UseVisualStyleBackColor = true;
+            this.CaptureBtn.Click += new System.EventHandler(this.ScreenshotBtn_Click);
             // 
             // label3
             // 
@@ -146,19 +137,40 @@ namespace FormsToKeyboard
             this.label4.TabIndex = 12;
             this.label4.Text = "Processed text";
             // 
+            // SendBtn
+            // 
+            this.SendBtn.Location = new System.Drawing.Point(13, 194);
+            this.SendBtn.Name = "SendBtn";
+            this.SendBtn.Size = new System.Drawing.Size(145, 23);
+            this.SendBtn.TabIndex = 13;
+            this.SendBtn.Text = "Send";
+            this.SendBtn.UseVisualStyleBackColor = true;
+            this.SendBtn.Click += new System.EventHandler(this.SendBtn_Click);
+            // 
+            // ProcessBtn
+            // 
+            this.ProcessBtn.Location = new System.Drawing.Point(13, 165);
+            this.ProcessBtn.Name = "ProcessBtn";
+            this.ProcessBtn.Size = new System.Drawing.Size(145, 23);
+            this.ProcessBtn.TabIndex = 14;
+            this.ProcessBtn.Text = "Process";
+            this.ProcessBtn.UseVisualStyleBackColor = true;
+            this.ProcessBtn.Click += new System.EventHandler(this.ProcessBtn_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(858, 317);
+            this.Controls.Add(this.ProcessBtn);
+            this.Controls.Add(this.SendBtn);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.ScreenshotBtn);
+            this.Controls.Add(this.CaptureBtn);
             this.Controls.Add(this.ImagePreview);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.DelayPicker);
-            this.Controls.Add(this.ClipboardBtn);
             this.Controls.Add(this.ProcessList);
             this.Controls.Add(this.InputText);
             this.Controls.Add(this.ClearBtn);
@@ -175,14 +187,15 @@ namespace FormsToKeyboard
         private System.Windows.Forms.Button ClearBtn;
         private System.Windows.Forms.RichTextBox InputText;
         private System.Windows.Forms.ComboBox ProcessList;
-        private System.Windows.Forms.Button ClipboardBtn;
         private System.Windows.Forms.NumericUpDown DelayPicker;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox ImagePreview;
-        private System.Windows.Forms.Button ScreenshotBtn;
+        private System.Windows.Forms.Button CaptureBtn;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button SendBtn;
+        private System.Windows.Forms.Button ProcessBtn;
     }
 }
 

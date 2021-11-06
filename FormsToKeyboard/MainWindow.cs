@@ -137,28 +137,6 @@ namespace FormsToKeyboard
             InputText.Text = "";
         }
 
-        private async void ClipboardBtn_Click(object sender, EventArgs e)
-        {
-            if (!Clipboard.ContainsImage())
-            {
-                MessageBox.Show($"No image in clipboard", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (!Clipboard.GetImage().IsDimentionsOk())
-            {
-                MessageBox.Show($"Image must have be between 50x50 and 10000x10000 pixels", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var text = await GetTextFromImage(Clipboard.GetImage().ToStream());
-
-            // Preview the text
-            InputText.Text = text;
-
-            // Send text to given process
-            SendTextToProcess(ProcessList.SelectedValue as string, text, (int)DelayPicker.Value);
-        }
 
         /// <summary>
         /// Attach to the given process and set the window to the foreground
@@ -201,6 +179,37 @@ namespace FormsToKeyboard
             var screenShot = screenGrabber.GetSnapShot();
             Clipboard.SetImage(screenShot);
             screenGrabber.SaveSnapShot($"D://Downloads//{Guid.NewGuid()}.jpg", screenShot);
+        }
+
+        private async void ProcessBtn_Click(object sender, EventArgs e)
+        {
+            if (!Clipboard.ContainsImage())
+            {
+                MessageBox.Show($"No image in clipboard", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!Clipboard.GetImage().IsDimentionsOk())
+            {
+                MessageBox.Show($"Image must have be between 50x50 and 10000x10000 pixels", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var text = await GetTextFromImage(Clipboard.GetImage().ToStream());
+
+            // Preview the text
+            InputText.Text = text;
+        }
+
+        private void SendBtn_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(InputText.Text))
+            {
+                MessageBox.Show($"No text to send to keyboard buffer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            SendStringToKeyboardBuffer(InputText.Text, (int)DelayPicker.Value);
         }
     }
 }

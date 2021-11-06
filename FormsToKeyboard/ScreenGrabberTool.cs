@@ -7,25 +7,25 @@ namespace FormsToKeyboard
 {
     public class ScreenGrabberTool
     {
-        private Rectangle canvasBounds = Screen.GetBounds(Point.Empty);
+        private Rectangle screenShotArea = Screen.GetBounds(Point.Empty);
 
         public void ShowGrabber()
         {
-            using var screenGrabber = new ScreenGrabber();
+            using var screenGrabber = new ScreenGrabberWindow();
 
             if (screenGrabber.ShowDialog() == DialogResult.OK)
             {
-                canvasBounds = screenGrabber.GetRectangle();
+                screenShotArea = screenGrabber.GetRectangle();
             }
         }
 
         public Bitmap GetSnapShot()
         {
-            using Image image = new Bitmap(canvasBounds.Width, canvasBounds.Height);
+            using Image image = new Bitmap(screenShotArea.Width, screenShotArea.Height);
 
             using (Graphics graphics = Graphics.FromImage(image))
             {
-                graphics.CopyFromScreen(new Point(canvasBounds.Left, canvasBounds.Top), Point.Empty, canvasBounds.Size);
+                graphics.CopyFromScreen(new Point(screenShotArea.Left, screenShotArea.Top), Point.Empty, screenShotArea.Size);
             }
             return new Bitmap(SetBorder(image, Color.Black, 1));
         }

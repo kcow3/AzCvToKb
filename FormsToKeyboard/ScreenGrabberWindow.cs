@@ -4,13 +4,13 @@ using System.Windows.Forms;
 
 namespace FormsToKeyboard
 {
-    public partial class ScreenGrabber : Form
+    public partial class ScreenGrabberWindow : Form
     {
         private Point cursorStartLocation;
         private Point cursorCurrentLocation;
         private bool isCapturing = false;
 
-        public ScreenGrabber()
+        public ScreenGrabberWindow()
         {
             InitializeComponent();
             WindowState = FormWindowState.Maximized;

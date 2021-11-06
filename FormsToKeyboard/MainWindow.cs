@@ -12,16 +12,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace FormsToKeyboard
 {
-    public partial class Form1 : Form
+    public partial class MainWindow : Form
     {
         [DllImport("User32.dll")]
         private static extern int SetForegroundWindow(IntPtr point);
+
         private static ComputerVisionClient _client;
 
-        public Form1()
+        public MainWindow()
         {
             InitializeComponent();
             InitializeData();
@@ -36,7 +36,7 @@ namespace FormsToKeyboard
         {
             try
             {
-                var config = new ConfigurationBuilder().AddUserSecrets<Form1>().Build();
+                var config = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build();
                 if (config == null)
                     return;
 

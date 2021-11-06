@@ -76,7 +76,7 @@ namespace FormsToKeyboard
         private void InitializeData()
         {
             // Processes to attach to (get from task manager processes).
-            ProcessList.DataSource = new List<string> { "msedge", "chrome", "notepad" };
+            ProcessList.DataSource = new List<string> { "N/A", "msedge", "chrome", "notepad" };
 
             InputText.Text = "";
 
@@ -195,7 +195,9 @@ namespace FormsToKeyboard
                 return;
             }
 
+            Cursor = Cursors.WaitCursor;
             var text = await GetTextFromImage(Clipboard.GetImage().ToStream());
+            Cursor = Cursors.Arrow;
 
             // Preview the text
             InputText.Text = text;
@@ -208,8 +210,13 @@ namespace FormsToKeyboard
                 MessageBox.Show($"No text to send to keyboard buffer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            
+            if (ProcessList.SelectedItem as string == "N/A")
+            {
+                return;
+            }
 
-            SendStringToKeyboardBuffer(InputText.Text, (int)DelayPicker.Value);
+            SendTextToProcess(ProcessList.SelectedItem as string, InputText.Text, (int)DelayPicker.Value);
         }
     }
 }

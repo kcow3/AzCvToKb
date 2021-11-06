@@ -15,6 +15,10 @@ namespace FormsToKeyboard
 
             if (screenGrabber.ShowDialog() == DialogResult.OK)
             {
+                var rectangle = screenGrabber.GetRectangle();
+
+                if (rectangle.Width == 0 || rectangle.Height == 0) return;
+
                 screenShotArea = screenGrabber.GetRectangle();
             }
         }

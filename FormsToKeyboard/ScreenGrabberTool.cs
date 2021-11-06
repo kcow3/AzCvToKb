@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
@@ -10,7 +9,7 @@ namespace FormsToKeyboard
     {
         private Rectangle canvasBounds = Screen.GetBounds(Point.Empty);
 
-        public void SetCanvas()
+        public void ShowGrabber()
         {
             using var screenGrabber = new ScreenGrabber();
 

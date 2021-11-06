@@ -197,7 +197,7 @@ namespace FormsToKeyboard
         /// <param name="e"></param>
         private void ScreenshotBtn_Click(object sender, EventArgs e)
         {
-            screenGrabber.SetCanvas();
+            screenGrabber.ShowGrabber();
             var screenShot = screenGrabber.GetSnapShot();
             Clipboard.SetImage(screenShot);
             screenGrabber.SaveSnapShot($"D://Downloads//{Guid.NewGuid()}.jpg", screenShot);

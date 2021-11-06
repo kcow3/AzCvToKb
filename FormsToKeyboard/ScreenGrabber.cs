@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace FormsToKeyboard
@@ -69,41 +68,6 @@ namespace FormsToKeyboard
         private void ScreenGrabber_Paint(object sender, PaintEventArgs e)
         {
             if (isCapturing) e.Graphics.DrawRectangle(Pens.Red, GetRectangle());
-        }
-
-
-
-        //private void CaptureBtn_Click(object sender, System.EventArgs e)
-        //{
-        //    TakeScreenshot();
-        //    DialogResult = DialogResult.OK;
-        //    Close();
-        //}
-
-        //private void CancelBtn_Click(object sender, System.EventArgs e)
-        //{
-        //    DialogResult = DialogResult.Cancel;
-        //    Close();
-        //}
-
-        private void TakeScreenshot()
-        {
-            //var b = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-            //var g = Graphics.FromImage(b);
-            //g.CopyFromScreen(0, 0, 0, 0, b.Size);
-            //b.Save($"D://Downloads//{Guid.NewGuid()}.jpg", ImageFormat.Jpeg);
-
-
-
-            Rectangle bounds = this.Bounds;
-            using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
-            {
-                using (Graphics g = Graphics.FromImage(bitmap))
-                {
-                    g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
-                }
-                bitmap.Save($"D://Downloads//{Guid.NewGuid()}.jpg", ImageFormat.Jpeg);
-            }
         }
     }
 }

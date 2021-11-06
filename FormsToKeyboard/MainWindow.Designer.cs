@@ -37,13 +37,16 @@ namespace FormsToKeyboard
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.ImagePreview = new System.Windows.Forms.PictureBox();
+            this.ScreenshotBtn = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DelayPicker)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImagePreview)).BeginInit();
             this.SuspendLayout();
             // 
             // ClearBtn
             // 
-            this.ClearBtn.Location = new System.Drawing.Point(12, 135);
+            this.ClearBtn.Location = new System.Drawing.Point(12, 128);
             this.ClearBtn.Name = "ClearBtn";
             this.ClearBtn.Size = new System.Drawing.Size(146, 23);
             this.ClearBtn.TabIndex = 2;
@@ -53,7 +56,7 @@ namespace FormsToKeyboard
             // 
             // InputText
             // 
-            this.InputText.Location = new System.Drawing.Point(164, 12);
+            this.InputText.Location = new System.Drawing.Point(526, 34);
             this.InputText.Name = "InputText";
             this.InputText.Size = new System.Drawing.Size(300, 175);
             this.InputText.TabIndex = 3;
@@ -69,7 +72,7 @@ namespace FormsToKeyboard
             // 
             // ClipboardBtn
             // 
-            this.ClipboardBtn.Location = new System.Drawing.Point(12, 164);
+            this.ClipboardBtn.Location = new System.Drawing.Point(13, 157);
             this.ClipboardBtn.Name = "ClipboardBtn";
             this.ClipboardBtn.Size = new System.Drawing.Size(146, 23);
             this.ClipboardBtn.TabIndex = 5;
@@ -109,17 +112,48 @@ namespace FormsToKeyboard
             // 
             // ImagePreview
             // 
-            this.ImagePreview.Location = new System.Drawing.Point(520, 12);
+            this.ImagePreview.Location = new System.Drawing.Point(164, 34);
             this.ImagePreview.Name = "ImagePreview";
             this.ImagePreview.Size = new System.Drawing.Size(300, 175);
             this.ImagePreview.TabIndex = 9;
             this.ImagePreview.TabStop = false;
             // 
+            // ScreenshotBtn
+            // 
+            this.ScreenshotBtn.Location = new System.Drawing.Point(14, 186);
+            this.ScreenshotBtn.Name = "ScreenshotBtn";
+            this.ScreenshotBtn.Size = new System.Drawing.Size(145, 23);
+            this.ScreenshotBtn.TabIndex = 10;
+            this.ScreenshotBtn.Text = "Take Screenshot";
+            this.ScreenshotBtn.UseVisualStyleBackColor = true;
+            this.ScreenshotBtn.Click += new System.EventHandler(this.ScreenshotBtn_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(164, 16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(48, 15);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Preview";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(526, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(83, 15);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Processed text";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(838, 196);
+            this.ClientSize = new System.Drawing.Size(858, 317);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.ScreenshotBtn);
             this.Controls.Add(this.ImagePreview);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -146,6 +180,9 @@ namespace FormsToKeyboard
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox ImagePreview;
+        private System.Windows.Forms.Button ScreenshotBtn;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }
 

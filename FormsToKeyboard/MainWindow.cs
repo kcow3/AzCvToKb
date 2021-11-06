@@ -18,14 +18,17 @@ namespace FormsToKeyboard
     {
         [DllImport("User32.dll")]
         private static extern int SetForegroundWindow(IntPtr point);
-
         private static ComputerVisionClient _client;
+        private ScreenGrabberTool screenGrabber;
+
 
         public MainWindow()
         {
             InitializeComponent();
             InitializeData();
             InitializeAzureCv();
+
+            screenGrabber = new ScreenGrabberTool();
         }
 
         /// <summary>
@@ -185,6 +188,19 @@ namespace FormsToKeyboard
                 MessageBox.Show($"Error in sending text to process: {e.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+        }
+
+        /// <summary>
+        /// Opens the screenshot tool. If you capture a screenshot, it is saved to file, and copied to the clipboard for use.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ScreenshotBtn_Click(object sender, EventArgs e)
+        {
+            screenGrabber.SetCanvas();
+            var screenShot = screenGrabber.GetSnapShot();
+            Clipboard.SetImage(screenShot);
+            screenGrabber.SaveSnapShot($"D://Downloads//{Guid.NewGuid()}.jpg", screenShot);
         }
     }
 }

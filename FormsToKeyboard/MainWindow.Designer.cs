@@ -115,7 +115,7 @@ namespace FormsToKeyboard
             this.ImagePreview.TabIndex = 9;
             this.ImagePreview.TabStop = false;
             // 
-            // Form1
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -128,8 +128,8 @@ namespace FormsToKeyboard
             this.Controls.Add(this.ProcessList);
             this.Controls.Add(this.InputText);
             this.Controls.Add(this.ClearBtn);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "MainWindow";
+            this.Text = "Image OCR Helper";
             ((System.ComponentModel.ISupportInitialize)(this.DelayPicker)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImagePreview)).EndInit();
             this.ResumeLayout(false);

@@ -3,6 +3,8 @@
 A playground project written in Windows Forms (.NET Core 3.1) that uses Azure Computer Vision to perform Optical Character Recognition (OCR) on images in the Windows Clipboard.
 The recognised text can then be copied, or sent to a predefined list of Windows processes via the Keyboard Buffer (SendKeys) method.
 
+![OCR drawio](https://user-images.githubusercontent.com/27766536/141197092-1a1dc499-af5b-4a94-89a2-e01895390308.png)
+
 ## Azure setup
 
 This project requires you to create a Computer Vision project on Microsoft Azure.

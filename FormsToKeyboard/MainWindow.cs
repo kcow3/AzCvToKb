@@ -19,16 +19,21 @@ namespace FormsToKeyboard
         [DllImport("User32.dll")]
         private static extern int SetForegroundWindow(IntPtr point);
         private static ComputerVisionClient _client;
-        private ScreenGrabberTool screenGrabber;
-
+        private readonly ScreenGrabberTool _screenGrabber;
 
         public MainWindow()
         {
             InitializeComponent();
             InitializeData();
             InitializeAzureCv();
+            InitializePicturebox();
 
-            screenGrabber = new ScreenGrabberTool();
+            _screenGrabber = new ScreenGrabberTool();
+        }
+
+        private void InitializePicturebox()
+        {
+            ImagePreview.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         /// <summary>
@@ -175,10 +180,14 @@ namespace FormsToKeyboard
         /// <param name="e"></param>
         private void ScreenshotBtn_Click(object sender, EventArgs e)
         {
-            screenGrabber.ShowGrabber();
-            var screenShot = screenGrabber.GetSnapShot();
+            _screenGrabber.ShowGrabber();
+            var screenShot = _screenGrabber.GetSnapShot();
             Clipboard.SetImage(screenShot);
-            screenGrabber.SaveSnapShot($"D://Downloads//{Guid.NewGuid()}.jpg", screenShot);
+
+            ImagePreview.Image = Clipboard.GetImage();
+
+            // You can save the image to file storage using this line
+            //screenGrabber.SaveSnapShot($"D://Downloads//{Guid.NewGuid()}.jpg", screenShot);
         }
 
         private async void ProcessBtn_Click(object sender, EventArgs e)

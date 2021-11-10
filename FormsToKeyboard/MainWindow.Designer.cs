@@ -57,9 +57,9 @@ namespace FormsToKeyboard
             // 
             // InputText
             // 
-            this.InputText.Location = new System.Drawing.Point(526, 34);
+            this.InputText.Location = new System.Drawing.Point(472, 34);
             this.InputText.Name = "InputText";
-            this.InputText.Size = new System.Drawing.Size(300, 175);
+            this.InputText.Size = new System.Drawing.Size(300, 183);
             this.InputText.TabIndex = 3;
             this.InputText.Text = "";
             // 
@@ -105,7 +105,7 @@ namespace FormsToKeyboard
             // 
             this.ImagePreview.Location = new System.Drawing.Point(164, 34);
             this.ImagePreview.Name = "ImagePreview";
-            this.ImagePreview.Size = new System.Drawing.Size(300, 175);
+            this.ImagePreview.Size = new System.Drawing.Size(300, 183);
             this.ImagePreview.TabIndex = 9;
             this.ImagePreview.TabStop = false;
             // 
@@ -131,7 +131,7 @@ namespace FormsToKeyboard
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(526, 16);
+            this.label4.Location = new System.Drawing.Point(472, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(83, 15);
             this.label4.TabIndex = 12;
@@ -161,7 +161,7 @@ namespace FormsToKeyboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(858, 317);
+            this.ClientSize = new System.Drawing.Size(782, 233);
             this.Controls.Add(this.ProcessBtn);
             this.Controls.Add(this.SendBtn);
             this.Controls.Add(this.label4);
@@ -175,7 +175,7 @@ namespace FormsToKeyboard
             this.Controls.Add(this.InputText);
             this.Controls.Add(this.ClearBtn);
             this.Name = "MainWindow";
-            this.Text = "Image OCR Helper";
+            this.Text = "Azure Computer Vision OCR";
             ((System.ComponentModel.ISupportInitialize)(this.DelayPicker)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImagePreview)).EndInit();
             this.ResumeLayout(false);

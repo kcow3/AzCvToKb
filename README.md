@@ -43,3 +43,11 @@ To modify the precess list, modify the following code in `MainWindow.cs`:
 ```cs
 ProcessList.DataSource = new List<string> { "N/A", "msedge", "chrome", "notepad" };
 ```
+
+## Demo
+![Demo](https://user-images.githubusercontent.com/27766536/141195460-afdb3287-6ba1-46f3-9cb5-38cba693a01a.gif)
+
+
+
+
+

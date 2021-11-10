@@ -75,9 +75,6 @@ namespace FormsToKeyboard
             }
         }
 
-        /// <summary>
-        /// Initialize preview text
-        /// </summary>
         private void InitializeData()
         {
             // Processes to attach to (get from task manager processes).
@@ -132,7 +129,7 @@ namespace FormsToKeyboard
             var charactersToSend = s.Select(x => new string(x, 1)).ToArray();
             foreach (var character in charactersToSend)
             {
-                SendKeys.SendWait(character.FormatStringForKeyboardBuffer());
+                SendKeys.Send(character.FormatStringForKeyboardBuffer());
                 Thread.Sleep(delay);
             }
         }
@@ -140,6 +137,8 @@ namespace FormsToKeyboard
         private void ClearBtn_Click(object sender, EventArgs e)
         {
             InputText.Text = "";
+            ImagePreview.Image = null;
+            Clipboard.Clear();
         }
 
 
@@ -190,6 +189,11 @@ namespace FormsToKeyboard
             //screenGrabber.SaveSnapShot($"D://Downloads//{Guid.NewGuid()}.jpg", screenShot);
         }
 
+        /// <summary>
+        /// Try to extract text from image. If successful, preview the text and add it to the clipboard.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void ProcessBtn_Click(object sender, EventArgs e)
         {
             if (!Clipboard.ContainsImage())
@@ -209,7 +213,11 @@ namespace FormsToKeyboard
             Cursor = Cursors.Arrow;
 
             // Preview the text
-            InputText.Text = text;
+            if (!string.IsNullOrEmpty(text))
+            {
+                InputText.Text = text;
+                Clipboard.SetText(text);
+            }
         }
 
         private void SendBtn_Click(object sender, EventArgs e)

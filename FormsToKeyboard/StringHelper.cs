@@ -8,14 +8,14 @@
         /// <param name="input">Input string</param>
         /// <returns>Converted string</returns>
         public static string FormatStringForKeyboardBuffer(this string input) => input
+            .Replace("{", "{{}")
+            .Replace("}", "{}}")
             .Replace("+", "{+}")
             .Replace("?", "{?}")
             .Replace("%", "{%}")
             .Replace("^", "{^}")
             .Replace("(", "{(}")
             .Replace(")", "{)}")
-            .Replace("{", "{{}")
-            .Replace("}", "{}}")
             .Replace("~", "{~}");
     }
 }
